@@ -1,17 +1,4 @@
 services:
-  # Redis for LangGraph pub-sub
-  - type: redis
-    name: deepagents-redis
-    plan: starter
-    region: frankfurt
-    ipAllowList: []
-
-  # PostgreSQL for LangGraph state persistence
-  - type: pserv
-    name: deepagents-postgres
-    plan: starter
-    region: frankfurt
-
   # LangGraph API server (Docker)
   - type: web
     name: deepagents-langgraph
@@ -22,14 +9,9 @@ services:
     dockerfilePath: ./Dockerfile
     envVars:
       - key: REDIS_URI
-        fromService:
-          type: redis
-          name: deepagents-redis
-          property: connectionString
+        sync: false
       - key: DATABASE_URI
-        fromDatabase:
-          name: deepagents-postgres
-          property: connectionString
+        sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: LANGSMITH_API_KEY
