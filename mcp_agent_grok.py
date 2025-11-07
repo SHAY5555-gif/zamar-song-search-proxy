@@ -77,7 +77,7 @@ def create_error_handling_wrapper(tool):
 
 
 async def get_mcp_tools():
-    """Get or initialize MCP tools from Chrome DevTools and Firecrawl"""
+    """Get or initialize MCP tools from Chrome DevTools, Bright Data, and Firecrawl"""
     global _mcp_client, _chrome_tools
 
     if _chrome_tools is None:
@@ -88,11 +88,16 @@ async def get_mcp_tools():
                 "url": "https://server.smithery.ai/@SHAY5555-gif/chrome-devtools-mcp/mcp?api_key=e20927d1-6314-4857-a81e-70ffb0b6af90&profile=supposed-whitefish-nFAkQL",
                 "transport": "streamable_http"
             },
-            # Firecrawl MCP - Web Scraping and Crawling
-            "firecrawl": {
-                "url": "https://mcp.firecrawl.dev/fc-0bed08c54ba34a349ef512c32d1a8328/v2/mcp",
+            # Bright Data MCP - Fast Web Scraping
+            "bright_data": {
+                "url": "https://mcp.brightdata.com/mcp?token=edebeabb58a1ada040be8c1f67fb707e797a1810bf874285698e03e8771861a5",
                 "transport": "streamable_http"
-            }
+            },
+            # # Firecrawl MCP - Web Scraping and Crawling (DISABLED - slow)
+            # "firecrawl": {
+            #     "url": "https://mcp.firecrawl.dev/fc-0bed08c54ba34a349ef512c32d1a8328/v2/mcp",
+            #     "transport": "streamable_http"
+            # }
         })
 
         raw_tools = await _mcp_client.get_tools()
