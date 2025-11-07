@@ -23,7 +23,7 @@ from langchain_core.tools import tool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_xai import ChatXAI
 from deepagents import create_deep_agent
-from parallel_processor_subagent import create_parallel_processor_subagent
+# from parallel_processor_subagent import create_parallel_processor_subagent
 
 
 # Simulated demo tools
@@ -336,7 +336,7 @@ These are real tools connected to a live Chrome browser via Smithery!"""
     )
 
     # Create parallel processor subagent
-    parallel_subagent = create_parallel_processor_subagent()
+    # parallel_subagent = create_parallel_processor_subagent()
 
     # Create and return the deep agent with:
     # - Grok Fast for main reasoning
@@ -345,5 +345,5 @@ These are real tools connected to a live Chrome browser via Smithery!"""
         model=model,
         tools=all_tools,
         system_prompt=system_prompt,
-        subagents=[parallel_subagent],
+        # subagents=[parallel_subagent],  # Disabled for production compatibility
     )
