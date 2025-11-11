@@ -38,10 +38,6 @@ def search_web(query: str) -> str:
     """Search the web for information."""
     return f"[MCP Tool: WebSearch] Found results for: {query}"
 
-@tool
-def get_weather(location: str) -> str:
-    """Get weather information for a location."""
-    return f"[MCP Tool: Weather] Weather in {location}: Sunny, 72°F"
 
 
 # Global MCP client and tools cache
@@ -82,6 +78,9 @@ async def get_mcp_tools():
     global _mcp_client, _chrome_tools
 
     if _chrome_tools is None:
+        # Import timedelta for timeout configuration
+        from datetime import timedelta
+
         # Connect to multiple MCP servers via remote HTTP
         _mcp_client = MultiServerMCPClient({
             # Chrome DevTools MCP from Smithery - REMOTE HTTP
@@ -89,10 +88,14 @@ async def get_mcp_tools():
                 "url": "https://server.smithery.ai/@SHAY5555-gif/chrome-devtools-mcp/mcp?api_key=e20927d1-6314-4857-a81e-70ffb0b6af90&profile=supposed-whitefish-nFAkQL",
                 "transport": "streamable_http"
             },
-            # Bright Data MCP - Fast Web Scraping
+            # Bright Data MCP - Fast Web Scraping (with extended timeout for scraping operations)
             "bright_data": {
                 "url": "https://mcp.brightdata.com/mcp?token=edebeabb58a1ada040be8c1f67fb707e797a1810bf874285698e03e8771861a5",
-                "transport": "streamable_http"
+                "transport": "streamable_http",
+                # Bright Data requires high timeouts for web scraping operations
+                # Recommended: 180-300 seconds for complex websites
+                "timeout": timedelta(seconds=300),  # 5 minutes timeout
+                "sse_read_timeout": timedelta(seconds=300),  # 5 minutes SSE read timeout
             },
             # # Firecrawl MCP - Web Scraping and Crawling (DISABLED - slow)
             # "firecrawl": {
