@@ -78,26 +78,27 @@ async def get_mcp_tools():
     global _mcp_client, _chrome_tools
 
     if _chrome_tools is None:
+        from datetime import timedelta
         import logging
 
         logger = logging.getLogger(__name__)
 
         # Connect to multiple MCP servers via remote HTTP
         _mcp_client = MultiServerMCPClient({
-            # Chrome DevTools MCP from Smithery - REMOTE HTTP
-            "chrome_devtools": {
-                "url": "https://server.smithery.ai/@SHAY5555-gif/chrome-devtools-mcp/mcp?api_key=e20927d1-6314-4857-a81e-70ffb0b6af90&profile=supposed-whitefish-nFAkQL",
-                "transport": "streamable_http"
-            },
-            # # Bright Data MCP - Fast Web Scraping (DISABLED - causes ConnectTimeout on Render)
-            # "bright_data": {
-            #     "url": "https://mcp.brightdata.com/mcp?token=edebeabb58a1ada040be8c1f67fb707e797a1810bf874285698e03e8771861a5",
-            #     "transport": "streamable_http",
-            #     # Bright Data requires high timeouts for web scraping operations
-            #     # Recommended: 180-300 seconds for complex websites
-            #     "timeout": timedelta(seconds=300),  # 5 minutes overall timeout
-            #     "sse_read_timeout": timedelta(seconds=300),  # 5 minutes SSE read timeout
+            # # Chrome DevTools MCP from Smithery - REMOTE HTTP (DISABLED - causes ConnectTimeout on Render)
+            # "chrome_devtools": {
+            #     "url": "https://server.smithery.ai/@SHAY5555-gif/chrome-devtools-mcp/mcp?api_key=e20927d1-6314-4857-a81e-70ffb0b6af90&profile=supposed-whitefish-nFAkQL",
+            #     "transport": "streamable_http"
             # },
+            # Bright Data MCP - Fast Web Scraping (with extended timeout for scraping operations)
+            "bright_data": {
+                "url": "https://mcp.brightdata.com/mcp?token=edebeabb58a1ada040be8c1f67fb707e797a1810bf874285698e03e8771861a5",
+                "transport": "streamable_http",
+                # Bright Data requires high timeouts for web scraping operations
+                # Recommended: 180-300 seconds for complex websites
+                "timeout": timedelta(seconds=300),  # 5 minutes overall timeout
+                "sse_read_timeout": timedelta(seconds=300),  # 5 minutes SSE read timeout
+            },
             # # Firecrawl MCP - Web Scraping and Crawling (DISABLED - slow)
             # "firecrawl": {
             #     "url": "https://mcp.firecrawl.dev/fc-0bed08c54ba34a349ef512c32d1a8328/v2/mcp",
