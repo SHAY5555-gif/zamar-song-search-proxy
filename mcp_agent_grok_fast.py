@@ -78,8 +78,9 @@ async def get_mcp_tools():
     global _mcp_client, _chrome_tools
 
     if _chrome_tools is None:
-        # Import timedelta for timeout configuration
-        from datetime import timedelta
+        import logging
+
+        logger = logging.getLogger(__name__)
 
         # Connect to multiple MCP servers via remote HTTP
         _mcp_client = MultiServerMCPClient({
@@ -88,15 +89,15 @@ async def get_mcp_tools():
                 "url": "https://server.smithery.ai/@SHAY5555-gif/chrome-devtools-mcp/mcp?api_key=e20927d1-6314-4857-a81e-70ffb0b6af90&profile=supposed-whitefish-nFAkQL",
                 "transport": "streamable_http"
             },
-            # Bright Data MCP - Fast Web Scraping (with extended timeout for scraping operations)
-            "bright_data": {
-                "url": "https://mcp.brightdata.com/mcp?token=edebeabb58a1ada040be8c1f67fb707e797a1810bf874285698e03e8771861a5",
-                "transport": "streamable_http",
-                # Bright Data requires high timeouts for web scraping operations
-                # Recommended: 180-300 seconds for complex websites
-                "timeout": timedelta(seconds=300),  # 5 minutes timeout
-                "sse_read_timeout": timedelta(seconds=300),  # 5 minutes SSE read timeout
-            },
+            # # Bright Data MCP - Fast Web Scraping (DISABLED - causes ConnectTimeout on Render)
+            # "bright_data": {
+            #     "url": "https://mcp.brightdata.com/mcp?token=edebeabb58a1ada040be8c1f67fb707e797a1810bf874285698e03e8771861a5",
+            #     "transport": "streamable_http",
+            #     # Bright Data requires high timeouts for web scraping operations
+            #     # Recommended: 180-300 seconds for complex websites
+            #     "timeout": timedelta(seconds=300),  # 5 minutes overall timeout
+            #     "sse_read_timeout": timedelta(seconds=300),  # 5 minutes SSE read timeout
+            # },
             # # Firecrawl MCP - Web Scraping and Crawling (DISABLED - slow)
             # "firecrawl": {
             #     "url": "https://mcp.firecrawl.dev/fc-0bed08c54ba34a349ef512c32d1a8328/v2/mcp",
@@ -104,10 +105,27 @@ async def get_mcp_tools():
             # }
         })
 
-        raw_tools = await _mcp_client.get_tools()
+        # Load tools from each server individually with error handling
+        # This allows the agent to work even if some MCP servers are unavailable
+        raw_tools = []
+        for server_name in _mcp_client.connections:
+            try:
+                logger.info(f"Loading tools from MCP server: {server_name}")
+                server_tools = await _mcp_client.get_tools(server_name=server_name)
+                raw_tools.extend(server_tools)
+                logger.info(f"Successfully loaded {len(server_tools)} tools from {server_name}")
+            except Exception as e:
+                logger.warning(
+                    f"Failed to load tools from {server_name}. "
+                    f"Error: {e.__class__.__name__}: {str(e)}. "
+                    f"Continuing with other servers..."
+                )
+                continue
 
         # Wrap ALL tools with error handling so they never crash
         _chrome_tools = [create_error_handling_wrapper(tool) for tool in raw_tools]
+
+        logger.info(f"Total tools loaded: {len(_chrome_tools)}")
 
     return _chrome_tools
 
