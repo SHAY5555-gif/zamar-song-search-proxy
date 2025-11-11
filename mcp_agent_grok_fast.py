@@ -38,6 +38,11 @@ def search_web(query: str) -> str:
     """Search the web for information."""
     return f"[MCP Tool: WebSearch] Found results for: {query}"
 
+@tool
+def get_weather(location: str) -> str:
+    """Get the current weather for a location."""
+    return f"[MCP Tool: Weather] The weather in {location} is sunny, 72°F"
+
 
 
 # Global MCP client and tools cache
