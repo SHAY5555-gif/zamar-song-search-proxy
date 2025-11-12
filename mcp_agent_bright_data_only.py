@@ -97,21 +97,12 @@ async def get_mcp_tools():
                     raw_tools.extend(server_tools)
                     logger.info(f"Successfully loaded {len(server_tools)} tools from {server_name}")
 
-                # Handle ExceptionGroup (Python 3.11+) using except*
-                except* Exception as eg:
-                    logger.error(f"ExceptionGroup occurred while loading tools from {server_name}:")
-                    for i, exc in enumerate(eg.exceptions):
-                        logger.error(f"  Sub-exception {i+1}: {exc.__class__.__name__}: {str(exc)}")
-                    logger.warning(f"Continuing despite errors...")
-                    continue
-
-                # Fallback for regular exceptions (if except* doesn't catch it)
                 except BaseException as e:
                     logger.error(
                         f"Failed to load tools from {server_name}. "
                         f"Error type: {e.__class__.__name__}, Message: {str(e)}"
                     )
-                    # Check if this is an ExceptionGroup
+                    # Check if this is an ExceptionGroup and log all sub-exceptions
                     if hasattr(e, 'exceptions'):
                         logger.error(f"This is an ExceptionGroup with {len(e.exceptions)} sub-exceptions:")
                         for i, sub_exc in enumerate(e.exceptions):
