@@ -1,0 +1,182 @@
+# ============================================
+# Docker Ignore File - Optimize Build Speed
+# ============================================
+# This file tells Docker which files to EXCLUDE from the build context
+# Smaller context = faster builds!
+
+# ============================================
+# Version Control
+# ============================================
+.git
+.gitignore
+.gitattributes
+.github
+
+# ============================================
+# Python Cache & Compiled Files
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ============================================
+# Virtual Environments
+# ============================================
+venv/
+env/
+ENV/
+.venv
+.env
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Testing & Coverage
+# ============================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# ============================================
+# Type Checking & Linting
+# ============================================
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.dmypy.json
+dmypy.json
+
+# ============================================
+# Build Artifacts
+# ============================================
+build/
+dist/
+*.egg-info/
+*.egg
+wheels/
+.eggs/
+
+# ============================================
+# Logs & Temporary Files
+# ============================================
+*.log
+*.err
+*.out
+*.tmp
+*.temp
+logs/
+*.pid
+
+# ============================================
+# Documentation
+# ============================================
+docs/
+*.md
+!README.md
+LICENSE
+CHANGELOG.md
+DEPLOYMENT_ANALYSIS.md
+
+# ============================================
+# LangGraph Specific
+# ============================================
+.langgraph_api/
+langgraph_server.log
+langgraph_server.err
+
+# ============================================
+# Package Files (downloaded during build)
+# ============================================
+*.tgz
+*.tar.gz
+*.whl
+package/
+
+# ============================================
+# Test Data & Fixtures
+# ============================================
+tests/
+test_*.py
+*_test.py
+fixtures/
+test_data/
+
+# ============================================
+# Deployment & CI/CD
+# ============================================
+.dockerignore
+Dockerfile
+docker-compose*.yml
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+Jenkinsfile
+
+# ============================================
+# Render Specific
+# ============================================
+render.yaml
+render-cli.exe
+render.exe
+render-cli.zip
+
+# ============================================
+# Other Tools
+# ============================================
+install_scoop.ps1
+*.ps1
+Makefile
+
+# ============================================
+# Database & Redis (use remote services)
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+redis-data/
+
+# ============================================
+# Node.js (if any)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ============================================
+# Jupyter Notebooks
+# ============================================
+*.ipynb
+.ipynb_checkpoints/
+
+# ============================================
+# Environment Files (use Render's env vars)
+# ============================================
+.env*
+!.env.example
+secrets/
+credentials.json
+
+# ============================================
+# Test Results
+# ============================================
+test_*.json
+test_results/

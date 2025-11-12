@@ -1,5 +1,16 @@
+# ============================================
+# Core Dependencies - Order Optimized
+# ============================================
+# Most stable packages first for better caching
+# If these don't change, Docker will reuse the cached layer
+
+# Core web framework dependencies
 fastapi==0.115.12
-uvicorn==0.34.0
-httpx==0.28.1
 pydantic==2.10.6
+httpx==0.28.1
+
+# ASGI server with performance optimizations
+uvicorn[standard]==0.34.0
+
+# LangChain integration
 langchain-xai

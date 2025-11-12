@@ -4,9 +4,22 @@ services:
     name: deepagents-langgraph
     runtime: docker
     plan: starter
+    # Performance Build Pipeline - Faster builds with more CPU/RAM
+    # Costs more per minute but reduces total build time by 50-70%
+    # Comment out if cost is a concern
+    buildPlan: performance
     region: frankfurt
     branch: main
     dockerfilePath: ./Dockerfile
+    # Docker image caching - speeds up subsequent builds
+    dockerContext: .
+    # Auto-deploy on push (disable if you want manual deploys)
+    autoDeploy: true
+    # Health check configuration - LangGraph typically uses /ok endpoint
+    # Change to /health if your API uses that instead
+    healthCheckPath: /ok
+    # Restart policy
+    pullRequestPreviewsEnabled: true
     envVars:
       - key: REDIS_URI
         sync: false
